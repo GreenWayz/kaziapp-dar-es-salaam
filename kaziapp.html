@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaziApp Dar es Salaam - Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: #2c7873;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .location {
+            background: #239089;
+            padding: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .location-icon {
+            margin-right: 5px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab.active {
+            color: #2c7873;
+            border-bottom: 3px solid #2c7873;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .category-item {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #2c7873;
+        }
+        
+        .category-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #2c7873;
+        }
+        
+        .category-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .task-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .task-location {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .task-price {
+            color: #2c7873;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .btn {
+            background: #2c7873;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #239089;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .post-task-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c7873;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">KaziApp</div>
+            <div class="tagline">Your trusted task assistant in Dar es Salaam</div>
+            <div class="location">
+                <span class="location-icon">📍</span>
+                Dar es Salaam, Tanzania
+            </div>
+        </header>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('home')">Home</div>
+            <div class="nav-tab" onclick="showTab('post')">Post a Task</div>
+            <div class="nav-tab" onclick="showTab('my-tasks')">My Tasks</div>
+        </div>
+        
+        <div class="content">
+            <!-- Home Tab -->
+            <div id="home-tab">
+                <h2 class="section-title">Popular Categories</h2>
+                <div class="category-grid">
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">🛠️</div>
+                        <div class="category-name">Home Repairs</div>
+                    </div>
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">🧹</div>
+                        <div class="category-name">Cleaning</div>
+                    </div>
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">🚚</div>
+                        <div class="category-name">Moving Help</div>
+                    </div>
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">🛒</div>
+                        <div class="category-name">Shopping</div>
+                    </div>
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">📦</div>
+                        <div class="category-name">Delivery</div>
+                    </div>
+                    <div class="category-item" onclick="showTab('post')">
+                        <div class="category-icon">🎉</div>
+                        <div class="category-name">Event Help</div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Available Tasks Near You</h2>
+                <div class="task-card">
+                    <div class="task-title">Furniture Assembly in Sinza</div>
+                    <div class="task-location">📍 Sinza, Dar es Salaam</div>
+                    <div class="task-price">TZS 25,000</div>
+                    <div class="task-meta">
+                        <span>Posted 2 hours ago</span>
+                        <span>3 bids received</span>
+                    </div>
+                </div>
+                
+                <div class="task-card">
+                    <div class="task-title">Grocery Shopping - Kariakoo Market</div>
+                    <div class="task-location">📍 Kariakoo, Dar es Salaam</div>
+                    <div class="task-price">TZS 15,000</div>
+                    <div class="task-meta">
+                        <span>Posted 1 hour ago</span>
+                        <span>5 bids received</span>
+                    </div>
+                </div>
+                
+                <div class="task-card">
+                    <div class="task-title">Home Cleaning - 3 Bedroom Apartment</div>
+                    <div class="task-location">📍 Mikocheni, Dar es Salaam</div>
+                    <div class="task-price">TZS 35,000</div>
+                    <div class="task-meta">
+                        <span>Posted 3 hours ago</span>
+                        <span>2 bids received</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post Task Tab -->
+            <div id="post-tab" class="hidden">
+                <h2 class="section-title">Post a New Task</h2>
+                <div class="post-task-form">
+                    <div class="form-group">
+                        <label for="task-title">Task Title</label>
+                        <input type="text" id="task-title" placeholder="e.g., Furniture Assembly">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-category">Category</label>
+                        <select id="task-category">
+                            <option value="">Select a category</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="repairs">Home Repairs</option>
+                            <option value="moving">Moving Help</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="delivery">Delivery</option>
+                            <option value="events">Event Help</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-location">Location in Dar es Salaam</label>
+                        <select id="task-location">
+                            <option value="">Select your area</option>
+                            <option value="sinza">Sinza</option>
+                            <option value="kariakoo">Kariakoo</option>
+                            <option value="mikocheni">Mikocheni</option>
+                            <option value="masaki">Masaki</option>
+                            <option value="ubungo">Ubungo</option>
+                            <option value="mbezi">Mbezi Beach</option>
+                            <option value="posta">Posta</option>
+                            <option value="kigamboni">Kigamboni</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-budget">Budget (TZS)</label>
+                        <input type="number" id="task-budget" placeholder="e.g., 25000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-description">Task Description</label>
+                        <textarea id="task-description" placeholder="Describe your task in detail..."></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="postTask()">Post Task</button>
+                </div>
+            </div>
+            
+            <!-- My Tasks Tab -->
+            <div id="my-tasks-tab" class="hidden">
+                <h2 class="section-title">My Posted Tasks</h2>
+                <p style="text-align: center; padding: 20px; color: #666;">
+                    You haven't posted any tasks yet. Post your first task to get started!
+                </p>
+                <button class="btn" onclick="showTab('post')">Post Your First Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.getElementById('home-tab').classList.add('hidden');
+            document.getElementById('post-tab').classList.add('hidden');
+            document.getElementById('my-tasks-tab').classList.add('hidden');
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab and set active
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function postTask() {
+            const title = document.getElementById('task-title').value;
+            const category = document.getElementById('task-category').value;
+            const location = document.getElementById('task-location').value;
+            const budget = document.getElementById('task-budget').value;
+            
+            if (!title || !category || !location || !budget) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = 'Task posted successfully! Taskers will now bid on your task.';
+            document.body.appendChild(notification);
+            
+            // Reset form
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-category').value = '';
+            document.getElementById('task-location').value = '';
+            document.getElementById('task-budget').value = '';
+            document.getElementById('task-description').value = '';
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+                showTab('my-tasks');
+            }, 3000);
+        }
+        
+        // Initialize with home tab
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('home');
+        });
+    </script>
+</body>
+</html>
