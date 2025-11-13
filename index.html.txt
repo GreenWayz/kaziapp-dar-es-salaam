@@ -1,5 +1,0 @@
-kaziapp-dar-es-salaam/
-├── index.html
-├── README.md
-├── LICENSE
-└── .gitignore
